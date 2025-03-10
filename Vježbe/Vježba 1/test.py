@@ -24,6 +24,3 @@ k = (int(y2)-int(y1))/(int(x2)-int(x1))
 l = int(y1) - k*int(x1)
 print('Pravac koji povezuje dvije točke je y={}x+{}'.format(str(k),str(l)))
 print('-----------------------------------')
-
-print('hello')
-print('hello2')
