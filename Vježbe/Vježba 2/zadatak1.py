@@ -11,6 +11,10 @@ a = F*m
 v = v0 + a*t
 s = s0 + v*t
 
+# i forgot everything about matplot,
+# but i know that theres a better way of doing this, 
+# so this will probably change :)
+
 at = matplot.figure(0)
 matplot.title('a-t graf')
 matplot.xlabel('t (s)')
