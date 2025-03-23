@@ -1,59 +1,78 @@
 import numpy as np
 import matplotlib.pyplot as matplot
 
-def jednoliko_gibanje(F,m,t1,t2,v0=0,s0=0):
-    t = np.linspace(t1,t2)
+def jednoliko_gibanje(F,m,t0,t,v0=0,s0=0,dt=0.001):
 
-    a = F*m
-    v = v0 + a*t
-    s = s0 + v*t
+    a = []
+    total_time = np.arange(t0,t+1,dt)
+    v = [v0]
+    s = [s0]
 
-    at = matplot.figure(0)
-    matplot.title('a-t graf')
-    matplot.xlabel('t (s)')
-    matplot.ylabel('a (m/s^2)')
-    matplot.plot(t,np.linspace(a,a))
+    for i in range(len(total_time)):
+        a.append(F/m)
+        v.append(v[i] + a[i]*dt)
+        s.append(s[i] + v[i+1]*dt)
 
-    vt = matplot.figure(1)
-    matplot.title('v-t graf')
-    matplot.xlabel('t (s)')
-    matplot.ylabel('v (m/s)')
-    matplot.plot(t,v)
+    v.remove(v0)
+    s.remove(s0)
 
-    st = matplot.figure(2)
-    matplot.title('s-t graf')
-    matplot.xlabel('t (s)')
-    matplot.ylabel('s (m)')
-    matplot.plot(t,s)
+    fig, axes = matplot.subplots(nrows=1, ncols=3)
+
+    axes[0].plot(total_time,a,color='red')
+    axes[0].set_title('a-t graf')
+    axes[0].set_xlabel('t (s)')
+    axes[0].set_ylabel('a (m/s^2)')
+
+    axes[1].plot(total_time,v,color='green')
+    axes[1].set_title('v-t graf')
+    axes[1].set_xlabel('t (s)')
+    axes[1].set_ylabel('v (m/s)')
+
+    axes[2].plot(total_time,s,color='blue')
+    axes[2].set_title('s-t graf')
+    axes[2].set_xlabel('t (s)')
+    axes[2].set_ylabel('s (m)')
+    axes[2].axis([0, t, 0, s[-1]])
 
     matplot.show()
 
 
-def kosi_hitac(v0,theta,t1,t2,g=9.81):
-    t = np.linspace(t1,t2)
+def kosi_hitac(v0,theta,t0,t,x0=0,y0=0,dt=0.001,g=-9.81):
+
+    total_time = np.arange(t0,t,dt)
+
+    x = [x0]
+    y = [y0]
 
     vx = np.cos(theta/180*np.pi)*v0
-    x = vx*t
-
     vy = np.sin(theta/180*np.pi)*v0
-    y = vy*t - 0.5*g*t**2
+    v = [vy]
 
-    xy = matplot.figure(0)
-    matplot.title('x-y graf')
-    matplot.xlabel('y (m)')
-    matplot.ylabel('x (m)')
-    matplot.plot(x,y)
+    for i in range(0,len(total_time)):
 
-    xt = matplot.figure(1)
-    matplot.title('x-t graf')
-    matplot.xlabel('t (s)')
-    matplot.ylabel('x (m)')
-    matplot.plot(t,x)
+        x.append(x[i]+vx*dt)
+        v.append(v[i]+g*dt)
+        y.append(y[i]+v[i+1]*dt)
+    
+    v.remove(vy)
+    x.remove(x0)
+    y.remove(y0)
 
-    yt = matplot.figure(2)
-    matplot.title('y-t graf')
-    matplot.xlabel('t (s)')
-    matplot.ylabel('y (m)')
-    matplot.plot(t,y)
+    fig, axes = matplot.subplots(nrows=1, ncols=3)
+
+    axes[0].plot(x,y,color='red')
+    axes[0].set_title('x-y graf')
+    axes[0].set_xlabel('x (m)')
+    axes[0].set_ylabel('y (m)')
+
+    axes[1].plot(total_time,x,color='green')
+    axes[1].set_title('x-t graf')
+    axes[1].set_xlabel('t (s)')
+    axes[1].set_ylabel('x (m)')
+
+    axes[2].plot(total_time,y,color='blue')
+    axes[2].set_title('y-t graf')
+    axes[2].set_xlabel('t (s)')
+    axes[2].set_ylabel('y (m)')
 
     matplot.show()

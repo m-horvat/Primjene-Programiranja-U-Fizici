@@ -1,37 +1,48 @@
 import matplotlib.pyplot as matplot
 import numpy as np
 
-v0 = 70       # m/s
-theta = 30   # stupnjeva
-t = np.linspace(0,10)
-g = 9.81     # m/s^2
+g = -9.81
+theta = 30
 
+t = 2
+dt = 0.01
+total_time = np.arange(0,t,dt)
+
+x0 = 0
+x = [x0]
+y0 = 0
+y = [y0]
+
+v0 = 5
 vx = np.cos(theta/180*np.pi)*v0
-x = vx*t
-
 vy = np.sin(theta/180*np.pi)*v0
-y = vy*t - 0.5*g*t**2
+v = [vy]
 
-print(y)
+for i in range(0,len(total_time)):
 
-# figure, axis = matplot.subplots(3)
+    x.append(x[i]+vx*dt)
+    v.append(v[i]+g*dt)
+    y.append(y[i]+v[i+1]*dt)
 
-xy = matplot.figure(0)
-matplot.title('x-y graf')
-matplot.xlabel('y (m)')
-matplot.ylabel('x (m)')
-matplot.plot(x,y)
+v.remove(vy)
+x.remove(x0)
+y.remove(y0)
 
-xt = matplot.figure(1)
-matplot.title('x-t graf')
-matplot.xlabel('t (s)')
-matplot.ylabel('x (m)')
-matplot.plot(t,x)
+fig, axes = matplot.subplots(nrows=1, ncols=3)
 
-yt = matplot.figure(2)
-matplot.title('y-t graf')
-matplot.xlabel('t (s)')
-matplot.ylabel('y (m)')
-matplot.plot(t,y)
+axes[0].plot(x,y,color='red')
+axes[0].set_title('x-y graf')
+axes[0].set_xlabel('x (m)')
+axes[0].set_ylabel('y (m)')
+
+axes[1].plot(total_time,x,color='green')
+axes[1].set_title('x-t graf')
+axes[1].set_xlabel('t (s)')
+axes[1].set_ylabel('x (m)')
+
+axes[2].plot(total_time,y,color='blue')
+axes[2].set_title('y-t graf')
+axes[2].set_xlabel('t (s)')
+axes[2].set_ylabel('y (m)')
 
 matplot.show()
