@@ -1,4 +1,4 @@
-# SIDENOTE: i overcomplicated the assigned task because i wanted to have fun whilst making this
+# SIDE NOTE: i overcomplicated the assigned task because i wanted to have fun whilst making this
 # thank you for understanding <3
 
 import matplotlib.pyplot as matplot

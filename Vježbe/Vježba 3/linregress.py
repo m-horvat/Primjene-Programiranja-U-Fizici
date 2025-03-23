@@ -37,5 +37,4 @@ ax.set_title(r'Graf linearne regresije modula torzije $D_t = \frac{M}{\phi}$')
 ax.set_ylabel('M(Nm)')
 ax.set_xlabel(r'$\phi$(rad)')
 ax.legend()
-
 matplot.show()
