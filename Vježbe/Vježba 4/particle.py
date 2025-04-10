@@ -17,11 +17,11 @@ class Particle:
 
     def __move(self,vy,vx,x0,y0,deltat):
 
-        x0 = x0 + vx*deltat
-        vy = vy - 9.81*deltat
-        y0 = y0 + vy*deltat
+        x0 += vx*deltat
+        vy -= 9.81*deltat
+        y0 += vy*deltat
 
-        return(y0,x0,vy)
+        return(y0,x0)
 
     def range(self,deltat):
         import numpy as np
@@ -38,7 +38,6 @@ class Particle:
             result = self.__move(vy,vx,x0,y0,deltat)
             y0 = result[0]
             x0 = result[1]
-            vy = result[2]
 
             x_final.append(x0)
             y_final.append(y0)
@@ -62,7 +61,7 @@ class Particle:
         matplot.axvline(x_new_coordinates[-1],color='#BBBBBB', linestyle='dotted')
         matplot.axhline(y_new_coordinates[-1],color='#BBBBBB', linestyle='dotted')
         matplot.plot(x_new_coordinates,y_new_coordinates,color='#AA0000')
-        matplot.plot(x_new_coordinates[-1],y_new_coordinates[-1],color='#AA0000',marker='o',label='trenutni položaj tijela u t={}s'.format(t))
+        matplot.plot(x_new_coordinates[-1],y_new_coordinates[-1],color='#AA0000',marker='o',label='Trenutni položaj tijela u t={}s'.format(t))
         matplot.legend()
             
         matplot.show()
