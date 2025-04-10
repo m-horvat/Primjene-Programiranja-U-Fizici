@@ -1,0 +1,30 @@
+import calculus as calc
+import matplotlib.pyplot as matplot
+import numpy as np
+
+def f_cubic(x):
+    y=5*x**3-2*x**2+2*x-3
+    return y
+
+def f_trig(x):
+    import numpy as np
+    y = np.cos(x)
+    return y
+
+# Raspon točaka od A do B
+a = -2
+b = 2
+N = np.linspace(a,b)
+
+# calc.derivacija(f_cubic,1)
+# calc.derivacija(f_trig,1)
+
+cubic_raspon = calc.derivacija_raspon(f_cubic,a,b)
+trig_raspon = calc.derivacija_raspon(f_trig,a,b)
+
+fig, axes = matplot.subplots(nrows=1, ncols=2)
+
+axes[0].plot(N,trig_raspon[1],'ro',markersize=1)
+axes[1].plot(N,cubic_raspon[1],'ro',markersize=1)
+matplot.show()
+
