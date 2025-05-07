@@ -14,17 +14,47 @@ def f_trig(x):
 # Raspon točaka od A do B
 a = -2
 b = 2
-N = np.linspace(a,b)
+d = 0.1
+e = 3
 
-# calc.derivacija(f_cubic,1)
-# calc.derivacija(f_trig,1)
+cubic_full_list = []
+trig_full_list = []
 
-cubic_raspon = calc.derivacija_raspon(f_cubic,a,b)
-trig_raspon = calc.derivacija_raspon(f_trig,a,b)
+for i in range(0,e):
+    cubic_full_list.append(calc.derivacija_raspon(f_cubic,a,b,d**i,'two-step'))
+    trig_full_list.append(calc.derivacija_raspon(f_trig,a,b,d**i,'two-step'))
 
 fig, axes = matplot.subplots(nrows=1, ncols=2)
 
-axes[0].plot(N,trig_raspon[1],'ro',markersize=1)
-axes[1].plot(N,cubic_raspon[1],'ro',markersize=1)
+# - - - - - - - - - - - - - -
+# Stvaranje analitičkog rješenja
+
+f_trig_analytical_list = []
+f_cubic_analytical_list = []
+
+def f_trig_analytical(x):
+    import numpy as np
+    return -np.sin(x)
+def f_cubic_analytical(x):
+    return 15*x**2-4*x+2
+
+N = np.linspace(a,b)
+for i in N:
+    f_trig_analytical_list.append(f_trig_analytical(i))
+    f_cubic_analytical_list.append(f_cubic_analytical(i))
+
+# - - - - - - - - - - - - - -
+
+axes[0].plot(N,f_cubic_analytical_list,color='#BBBBBB')
+axes[1].plot(N,f_trig_analytical_list,color='#BBBBBB')
+
+axes[0].plot(cubic_full_list[0][0],cubic_full_list[0][1],'ro',markersize=2)
+axes[1].plot(trig_full_list[0][0],trig_full_list[0][1],'ro',markersize=1)
+axes[0].plot(cubic_full_list[1][0],cubic_full_list[1][1],'go',markersize=1)
+axes[1].plot(trig_full_list[1][0],trig_full_list[1][1],'go',markersize=1)
+axes[0].plot(cubic_full_list[2][0],cubic_full_list[2][1],'bo',markersize=1)
+axes[1].plot(trig_full_list[2][0],trig_full_list[2][1],'bo',markersize=1)
+
+
 matplot.show()
 
