@@ -79,19 +79,39 @@ class HarmonicOscillator:
         matplot.plot(time,comparison,label='analytical solution')
         matplot.show()
 
+    def period_titranja(self,dt1,dt2,dt3):
 
-    def period_titranja(self):
-        
-        result = 2
-        actual_result = self.__analyt_sol_period()
-        print('Period titranja numerički je {}, dok je stvarni rezultat {}'.format(result,actual_result))
+        multi_dt = [dt1,dt2,dt3]
+
+        for idx, dt in enumerate(multi_dt):
+            loop = True
+            v0 = self.startingspeed
+            x0 = self.startingpoint
+            t = 0
+            goal_range = self.__move(x0,v0,dt)[0]
+            if x0 >= 0:
+                direction = 'down'
+            else:
+                direction = 'up'
+            while loop == True:
+                movement = self.__move(x0,v0,dt)
+                x0 = movement[0]
+                v0 = movement[1]
+                t = t+dt
+                if direction == 'down' and x0>goal_range:
+                    break
+                if direction == 'up' and x0<goal_range:
+                    break 
+            actual_result = self.__analyt_sol_period()
+            print('Period titranja za dt{} numerički je {}, dok je stvarni rezultat {}'.format(idx,t,actual_result))
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 m = 1
 k = 10
 t = 7
-x0 = 5
+x0 = 9
 v0 = 0
 dt = 0.01
 
@@ -101,8 +121,8 @@ dt3 = 0.05
 
 test = HarmonicOscillator(m,k,t,x0,v0,dt)
 test.plotting(t)
-test.period_titranja()
 test.multiple_dt(t,dt1,dt2,dt3)
+test.period_titranja(dt1,dt2,dt3)
 
 
 
