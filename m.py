@@ -27,19 +27,19 @@ def runge_kutta(x1,y1,vx1,vy1,dt,D,m,g=9.81):
     vy2 = vy1 + 0.5*dt*k1y
     k2x, k2y = akc(vx2,vy2,D,m,g)
     l2x = vx1 + 0.5*dt*k2x
-    l2y = vx1 + 0.5*dt*k2y
+    l2y = vy1 + 0.5*dt*k2y
 
     vx3 = vx2 + 0.5*dt*k2x
     vy3 = vy2 + 0.5*dt*k2y
     k3x, k3y = akc(vx3,vy3,D,m,g)
     l3x = vx2 + 0.5*dt*k3x
-    l3y = vx2 + 0.5*dt*k3y
+    l3y = vy2 + 0.5*dt*k3y
 
     vx4 = vx3 + dt*k3x
     vy4 = vy3 + dt*k3y
     k4x, k4y = akc(vx4,vy4,D,m,g)
     l4x = vx3 + dt*k4x
-    l4y = vx3 + dt*k4y
+    l4y = vy3 + dt*k4y
     
     vx = vx1 + (dt/6)*(k1x+2*k2x+2*k3x+k4x)
     vy = vy1 + (dt/6)*(k1y+2*k2y+2*k3y+k4y)
