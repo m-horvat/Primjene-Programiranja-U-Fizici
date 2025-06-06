@@ -20,8 +20,6 @@ def step(s1,m1,v1,s2,m2,v2,dt,G=6.67408*10**-11):
     v_n2 = v2 + a2*dt
     s_n2 = s2 + v_n2*dt
 
-    print(s2)
-
     return (s_n1,s_n2,v_n1,v_n2)
 
 # Sunce:
