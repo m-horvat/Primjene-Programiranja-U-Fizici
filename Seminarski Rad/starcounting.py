@@ -1,17 +1,19 @@
-import numpy as np
 import matplotlib.pyplot as matplot
+import os
+
 
 class starcounting:
     def __init__(self,angle_boundary, offset, filename,luminosity_limit):
         self.angle_boundary = angle_boundary
-        self.offset = offset
-        self.filename = filename
-        self.library = self.__data(filename,luminosity_limit)
+        self.offset         = offset
+        self.filename       = filename
+        self.library        = self.__data(filename,luminosity_limit)
+
     # - - - - - - - - - - - - data extraction - - - - - - - - - - - -
 
     def __data(self,filename,luminosity_limit):
         library = []
-        with open(filename, 'r') as file:
+        with open(os.path.abspath(__file__).replace('starcounting.py','')+filename, 'r') as file:
             for id, line in enumerate(file):
                 if id == 0:
                     continue
@@ -32,7 +34,7 @@ class starcounting:
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-    # figuring out which stars can be seen depending on the angle that is being looked at
+    # fixing the boundaries if they go past their respective ranges
 
     def __boundarycorrection(self,angle_boundary):
         true_sight_RA = [0+angle_boundary[0],0-angle_boundary[0]]
@@ -53,6 +55,10 @@ class starcounting:
                 true_sight_RD[id] = 90
 
         return(true_sight_RA,true_sight_RD)
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    
+    # figuring out which stars can be seen depending on the angle that is being looked at
 
     def seeablestars(self,angle_boundary,offset,filename):
 
@@ -132,8 +138,8 @@ class starcounting:
 
         for star in visible_star_list:
             line = str(star['magnitude'])
-            if star['magnitude'] < 10:
-                colorstar = '#000000'
+            if star['magnitude'] > 9:
+                colorstar = '#CCCCCC'
             if line[0] != '-':
                 colorstar = '#'+str(line[0]+line[0]+line[0]+line[0]+line[0]+line[0])
             matplot.plot(star['phi'],star['theta'],color=colorstar,marker='.',linestyle='none')
@@ -164,35 +170,23 @@ class starcounting:
         matplot.show()
 
 
-        
-
-
-
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-# the point im looking at right now is in the center of the earth Lol !!
-
-#theta = [x['theta'] for x in library]
-#phi   = [x['phi']   for x in library]
 
 # this determines the range of theta and phi of stars that can be seen
 # what that means is that the first number's range will deviate 90 degrees from the starting angle in both directions
-# ex. start angle = 10, boundary = 50, it will search all stars from 0 to 60 and 320 to 360
+# ex. for phi (right ascension); offset = 10, boundary = 50, it will search all stars from 0 to 60 and 320 to 360
 # preferably don't go past 90 (its not realistic to see more than 180 degrees of the sky anyway)
 angle_boundary = [90,90]
-luminosity_limit = 5
+luminosity_limit = 7     # the maximum star magnitude we are looking for
 
-# offsetted from the vernal equinox, assume that the vernal equinox is in the constellation pisces
-offset   = [0,0]        
-filename = 'dataset'   
-degrees  = [0,360]       # the span at which you want to analyze (do not put the same number twice if you're counting in a circle)
+offset   = [50, 0]       # how much will the stars offset relative to the intersection of the ecliptic and equator during the vernal equinox
+filename = 'dataset'     # name of the dataset (make sure its in the same folder as the program)
+degrees  = [0,360]       # the span at which you want to analyze (do not put the same number twice if you're counting in a circle, if you want to see the star count for one measurement just change the count to 1)
 count    = 50            # how many times (data points on the x axis) do you want to analyze
 
 stars     = starcounting(angle_boundary, offset, filename, luminosity_limit)
 
-# offset = [90,0]
 stars.plot()
-
 stars.count_circle_plot(degrees,count)
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
